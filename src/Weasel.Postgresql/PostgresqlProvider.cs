@@ -177,6 +177,14 @@ namespace Weasel.Postgresql
                 return true;
             }
 
+            var idictionary = typeInfo.ImplementedInterfaces.FirstOrDefault(x =>
+                x.GetTypeInfo().IsGenericType && x.GetGenericTypeDefinition() == typeof(IDictionary<,>));
+            if (idictionary != null)
+            {
+                dbType = NpgsqlDbType.Jsonb;
+                return true;
+            }
+
             if (type == typeof(DBNull))
             {
                 dbType = NpgsqlDbType.Unknown;
